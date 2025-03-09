@@ -5,7 +5,7 @@ namespace API.Data
 {
     public class DbInitializer
     {
-        public void InitDb(WebApplication app)
+        public static void InitDb(WebApplication app)
         {
             using var scope = app.Services.CreateScope();
 
@@ -15,7 +15,7 @@ namespace API.Data
             SeedData(context);
         }
 
-        private void SeedData(StoreContext context)
+        private static void SeedData(StoreContext context)
         {
             context.Database.Migrate();
 
