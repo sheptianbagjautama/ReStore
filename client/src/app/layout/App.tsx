@@ -1,40 +1,26 @@
-import { useEffect, useState } from "react"
-import { Product } from "../models/product";
+import { Container } from "@mui/material";
+import { useEffect, useState } from "react";
 import Catalog from "../features/catalog/Catalog";
-import { Box, Button, Container, Typography } from "@mui/material";
-
+import { Product } from "../models/product";
+import NavBar from "./NavBar";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch('https://localhost:5001/api/products')
-    .then(response => response.json())
-    .then(data => setProducts(data));
-  },[])
-
-  const addProduct = () => {
-    setProducts(prevState => [...prevState, {
-      id:prevState.length + 1,
-      name: 'product' + (prevState.length + 1),
-      price: (prevState.length * 100) + 100,
-      quantityInStock:100,
-      description:'test',
-      pictureUrl:'https://picsum.photo/200',
-      type:'test',
-      brand:'test',
-    }]);
-  }
+    fetch("https://localhost:5001/api/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data));
+  }, []);
 
   return (
-   <Container maxWidth='xl'>
-    <Box display='center' justifyContent='center' gap={3} marginY={3}>
-    <Typography variant="h4">Re-store</Typography>
-    <Button variant="contained" onClick={addProduct}>Add Product</Button>
-    </Box>
-    <Catalog products={products}/>
-   </Container>
-  )
+    <>
+      <NavBar />
+      <Container maxWidth="xl" sx={{mt:14}}>
+        <Catalog products={products} />
+      </Container>
+    </>
+  );
 }
 
-export default App
+export default App;
