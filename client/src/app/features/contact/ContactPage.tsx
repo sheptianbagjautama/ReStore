@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from "react-redux"
-import { CounterState } from "./counterReducer"
 import { Button, ButtonGroup, Typography } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { decrement, increment } from "./counterReducer";
 
 export default function ContactPage() {
   //Untuk mendapatkan state dan state mana yang akan kita gunakan
-  const data = useSelector((state:CounterState) => state.data);
+  const {data} = useAppSelector(state => state.counter);
 
   //Untuk dispatch menugaskan perubahan state sesuai dengan action yang di kirim
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
 
   return (
@@ -19,8 +19,9 @@ export default function ContactPage() {
       The data is : {data}
     </Typography>
     <ButtonGroup>
-      <Button onClick={() => dispatch({type:'decrement'})} color="error">Decrement</Button>
-      <Button onClick={() => dispatch({type:'increment'})} color="secondary">Increment</Button>
+      <Button onClick={() => dispatch(decrement(1))} color="error">Decrement</Button>
+      <Button onClick={() => dispatch(increment(1))} color="secondary">Increment</Button>
+      <Button onClick={() => dispatch(increment(5))} color="primary"> by 5</Button>
     </ButtonGroup>
     </>
   )
