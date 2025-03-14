@@ -1,6 +1,7 @@
 import { configureStore, legacy_createStore } from "@reduxjs/toolkit";
 import counterReducer, { counterSlice } from "../features/contact/counterReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { catalogApi } from "../features/catalog/catalogApi";
 
 //Redux Core yang dulu
 export function configureTheStore(){
@@ -10,8 +11,12 @@ export function configureTheStore(){
 //Redux Toolkit yang baru 
 export const store = configureStore({
     reducer:{
+        [catalogApi.reducerPath]:catalogApi.reducer,
         counter:counterSlice.reducer
-    }
+    },
+    //Inisialisasi middleware untuk caching, fetching status
+    middleware:(getDefaultMiddleware) => 
+        getDefaultMiddleware().concat(catalogApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>
