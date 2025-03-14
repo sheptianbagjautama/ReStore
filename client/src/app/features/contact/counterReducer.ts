@@ -11,7 +11,7 @@ const initialState:CounterState = {
 //Redux Toolkit yang baru 
 export const counterSlice = createSlice({
     name:'counter',
-    initialState,
+    initialState, 
     reducers:{
         increment:(state, action) => {
             state.data += action.payload
