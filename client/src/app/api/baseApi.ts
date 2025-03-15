@@ -6,6 +6,8 @@ const customBaseQuery = fetchBaseQuery({
     baseUrl:'https://localhost:5001/api'
 });
 
+type ErrorResponse = | string | {title:string} | {errors:string[]}
+
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
 export const baseQueryWithErrorHandling = async(args:string | FetchArgs, api:BaseQueryApi, extraOptions:object) => {
@@ -19,14 +21,32 @@ export const baseQueryWithErrorHandling = async(args:string | FetchArgs, api:Bas
         const originalStatus = result.error.status === 'PARSING_ERROR' && result.error.originalStatus ? 
         result.error.originalStatus : result.error.status;
 
-        const responseData = result.error.data;
+        const responseData = result.error.data as ErrorResponse;
 
         switch(originalStatus){
             case 400:
-                toast.error(responseData as string);
+                //jika responseData string
+                if(typeof responseData === 'string') toast.error(responseData);
+                //jika didalam responseData ada key errors
+                else if('errors' in responseData) {
+                    toast.error('validation error');
+                }
+                else toast.error(responseData.title);
                 break;
             case 401:
-                toast.error(responseData.title);
+                //jika responseData object dan didalamnya ada key title
+                if(typeof responseData === 'object' && 'title' in responseData)
+                    toast.error(responseData.title);
+                break;
+            case 404:
+                //jika responseData object dan didalamnya ada key title
+                if(typeof responseData === 'object' && 'title' in responseData)
+                    toast.error(responseData.title);
+                break;
+            case 500:
+                //jika responseData object dan didalamnya ada key title
+                if(typeof responseData === 'object' && 'title' in responseData)
+                    toast.error(responseData.title);
                 break;
             default:
                 break;
