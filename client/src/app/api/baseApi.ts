@@ -42,13 +42,13 @@ export const baseQueryWithErrorHandling = async(args:string | FetchArgs, api:Bas
             case 404:
                 //jika responseData object dan didalamnya ada key title
                 if(typeof responseData === 'object' && 'title' in responseData)
-                    toast.error(responseData.title);
+                    router.navigate('/not-found');
                 break;
             case 500:
                 //jika responseData object dan didalamnya ada key title
                 if(typeof responseData === 'object')
                     //mengarahkan ke halaman server error dan mengirimkan paramter/state error 
-                    router.navigate('/server-error', {state:{error:responseData}})
+                    router.navigate('/server-error', {state:{error:responseData}});
                 break;
             default:
                 break;
