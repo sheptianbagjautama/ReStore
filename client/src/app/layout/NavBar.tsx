@@ -11,7 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { useAppSelector } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { setDarkMode } from "./uiSlice";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -36,13 +37,9 @@ const navStyles = {
   },
 };
 
-type Props = {
-  darkMode: boolean;
-  toogleDarkMode: () => void;
-};
-
-export default function NavBar({ darkMode, toogleDarkMode }: Props) {
-  const {isLoading} = useAppSelector(state => state.ui);
+export default function NavBar() {
+  const {isLoading,darkMode} = useAppSelector(state => state.ui);
+  const dispatch = useAppDispatch();
 
   return (
     <AppBar position="fixed">
@@ -51,7 +48,7 @@ export default function NavBar({ darkMode, toogleDarkMode }: Props) {
           <Typography component={NavLink} sx={navStyles} to="/" variant="h6">
             RE-STORE
           </Typography>
-          <IconButton onClick={toogleDarkMode}>
+          <IconButton onClick={() => dispatch(setDarkMode())}>
             {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
           </IconButton>
         </Box>

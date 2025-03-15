@@ -5,12 +5,18 @@ import {
   CssBaseline,
   ThemeProvider,
 } from "@mui/material";
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../store/store";
 import NavBar from "./NavBar";
 
+
+
 function App() {
-  const [darkMode, setDarkMode] = useState<boolean>(true)
+  //Cara lama
+  // const [darkMode, setDarkMode] = useState<boolean>(getInitialDarkMode())
+
+  //Cara baru
+  const {darkMode} = useAppSelector(state => state.ui);
 
   const palleteType = darkMode ? "dark" : "light";
 
@@ -23,14 +29,16 @@ function App() {
     },
   });
 
-  const toogleDarkMode = () => {
-    setDarkMode(!darkMode);
-  }
+  //Cara lama
+  // const toogleDarkMode = () => {
+  //   localStorage.setItem('darkMode', JSON.stringify(!darkMode));
+  //   setDarkMode(!darkMode);
+  // }
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <NavBar darkMode={darkMode} toogleDarkMode={toogleDarkMode}/>
+      <NavBar/>
       <Box
         sx={{
           minHeight: "100vh",
