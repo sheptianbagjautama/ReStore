@@ -29,7 +29,7 @@ export const baseQueryWithErrorHandling = async(args:string | FetchArgs, api:Bas
                 if(typeof responseData === 'string') toast.error(responseData);
                 //jika didalam responseData ada key errors
                 else if('errors' in responseData) {
-                    toast.error('validation error');
+                    throw Object.values(responseData.errors).flat().join(', ');
                 }
                 else toast.error(responseData.title);
                 break;
