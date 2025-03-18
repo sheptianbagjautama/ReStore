@@ -43,10 +43,17 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
         {
-            //get basket
-            //remove the item or reduce its quantity
-            //save changes
-            return Ok();
+            var basket = await RetrieveBasket();
+
+            if (basket == null) return BadRequest("Unable to retrieve basket");
+
+            basket.RemoveItem(productId, quantity);
+
+            var result = await context.SaveChangesAsync() > 0;
+
+            if(result) return Ok();
+
+            return BadRequest("Problem updating basket");
         }
 
 
