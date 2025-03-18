@@ -13,9 +13,9 @@ import { configureTheStore, store } from './app/store/store.ts';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-//Reduc Core yang dulu
-const storeLegacy = configureTheStore();
-console.log('store => ' , storeLegacy.getState());
+// //Reduc Core yang dulu
+// const storeLegacy = configureTheStore();
+// console.log('store => ' , storeLegacy.getState());
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

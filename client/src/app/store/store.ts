@@ -1,10 +1,10 @@
-import { configureStore, legacy_createStore } from "@reduxjs/toolkit";
-import counterReducer, { counterSlice } from "../features/contact/counterReducer";
+import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { catalogApi } from "../features/catalog/catalogApi";
-import { uiSlice } from "../layout/uiSlice";
 import { errorApi } from "../features/about/errorApi";
 import { basketApi } from "../features/basket/basketApi";
+import { catalogApi } from "../features/catalog/catalogApi";
+import { counterSlice } from "../features/contact/counterReducer";
+import { uiSlice } from "../layout/uiSlice";
 
 // //Redux Core yang dulu
 // export function configureTheStore(){
