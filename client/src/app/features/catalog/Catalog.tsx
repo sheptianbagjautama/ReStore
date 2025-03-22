@@ -1,4 +1,4 @@
-import { Grid2 } from "@mui/material";
+import { Grid2, Pagination } from "@mui/material";
 import { useFetchProductsQuery } from "./catalogApi";
 import ProductList from "./ProductList";
 import Filters from "./Filters";
@@ -15,7 +15,7 @@ export default function Catalog() {
   //    }, []);
 
   ////Cara menggunakan RTK Query
-  const productParams = useAppSelector(state => state.catalog);
+  const productParams = useAppSelector((state) => state.catalog);
   const { data, isLoading } = useFetchProductsQuery(productParams);
 
   if (isLoading || !data) return <div>Loading...</div>;
@@ -26,7 +26,13 @@ export default function Catalog() {
         <Filters />
       </Grid2>
       <Grid2 size={9}>
-        <ProductList products={data} />
+        <ProductList products={data.items} />
+        <Pagination
+          color="secondary"
+          size="large"
+          count={data.pagination.totalPages}
+          page={data.pagination.currentPage}
+        />
       </Grid2>
     </Grid2>
   );
