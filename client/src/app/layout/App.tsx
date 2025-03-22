@@ -5,7 +5,7 @@ import {
   CssBaseline,
   ThemeProvider,
 } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { useAppSelector } from "../store/store";
 import NavBar from "./NavBar";
 
@@ -37,6 +37,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* Agar ketika pindah halamana scroll layar tetap diatas */}
+      <ScrollRestoration/> 
       <CssBaseline />
       <NavBar/>
       <Box
