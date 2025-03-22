@@ -5,6 +5,7 @@ import { basketApi } from "../features/basket/basketApi";
 import { catalogApi } from "../features/catalog/catalogApi";
 import { counterSlice } from "../features/contact/counterReducer";
 import { uiSlice } from "../layout/uiSlice";
+import { catalogSlice } from "../features/catalog/catalogSlice";
 
 // //Redux Core yang dulu
 // export function configureTheStore(){
@@ -18,7 +19,8 @@ export const store = configureStore({
         [errorApi.reducerPath]:errorApi.reducer,
         [basketApi.reducerPath]:basketApi.reducer,
         counter:counterSlice.reducer,
-        ui:uiSlice.reducer
+        ui:uiSlice.reducer,
+        catalog:catalogSlice.reducer
     },
     //Inisialisasi middleware untuk caching, fetching status
     middleware:(getDefaultMiddleware) => 
