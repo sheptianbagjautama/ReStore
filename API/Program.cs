@@ -1,5 +1,7 @@
 using API.Data;
+using API.Entities;
 using API.Middleware;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services.AddDbContext<StoreContext>(opt => {
 builder.Services.AddCors();
 builder.Services.AddTransient<ExceptionMiddleware>();
 
+//Menambahkan service package identity untuk keperluan autentikasi dan otorisasi (login, register, logout, role dll)
+builder.Services.AddIdentityApiEndpoints<User>(opt => {
+    opt.User.RequireUniqueEmail = true;
+}).AddRoles<IdentityRole>().AddEntityFrameworkStores<StoreContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,7 +27,14 @@ app.UseCors(opt => {
     opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:3000");
 });
 
+//Autentikasi dan otorisasi
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
+
+//Untuk endpoint login, register, logout dll cth: api/login
+app.MapGroup("api").MapIdentityApi<User>();
 
 DbInitializer.InitDb(app);
 
