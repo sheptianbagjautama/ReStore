@@ -6,6 +6,7 @@ import { catalogApi } from "../features/catalog/catalogApi";
 import { counterSlice } from "../features/contact/counterReducer";
 import { uiSlice } from "../layout/uiSlice";
 import { catalogSlice } from "../features/catalog/catalogSlice";
+import { accountApi } from "../features/account/accountApi";
 
 // //Redux Core yang dulu
 // export function configureTheStore(){
@@ -18,6 +19,7 @@ export const store = configureStore({
         [catalogApi.reducerPath]:catalogApi.reducer,
         [errorApi.reducerPath]:errorApi.reducer,
         [basketApi.reducerPath]:basketApi.reducer,
+        [accountApi.reducerPath]:accountApi.reducer,
         counter:counterSlice.reducer,
         ui:uiSlice.reducer,
         catalog:catalogSlice.reducer
@@ -27,7 +29,8 @@ export const store = configureStore({
         getDefaultMiddleware().concat(
             catalogApi.middleware, 
             errorApi.middleware,
-            basketApi.middleware
+            basketApi.middleware,
+            accountApi.middleware,
         )
 })
 
