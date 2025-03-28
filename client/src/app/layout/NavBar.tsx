@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { setDarkMode } from "./uiSlice";
 import { useFetchBasketQuery } from "../features/basket/basketApi";
 import UserMenu from "./UserMenu";
+import { useUseInfoQuery } from "../features/account/accountApi";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -40,7 +41,8 @@ const navStyles = {
 };
 
 export default function NavBar() {
-  const user = { email: "test@test.com", roles:[] };
+  const {data:user} = useUseInfoQuery();
+
   const { isLoading, darkMode } = useAppSelector((state) => state.ui);
   const dispatch = useAppDispatch();
   const { data: basket } = useFetchBasketQuery();

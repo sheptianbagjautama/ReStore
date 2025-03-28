@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSchema, LoginSchema } from "../../../lib/schemas/loginSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,9 +25,11 @@ export default function LoginForm() {
     mode:'onTouched',
     resolver:zodResolver(loginSchema)
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: LoginSchema) => {
     await login(data);
+    navigate('/catalog');
   };
 
   return (
