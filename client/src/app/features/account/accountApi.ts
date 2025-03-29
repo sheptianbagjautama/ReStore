@@ -64,4 +64,4 @@ export const accountApi = createApi({
   }),
 });
 
-export const {useLoginMutation, useRegisterMutation, useLogoutMutation, useUseInfoQuery} = accountApi;
+export const {useLoginMutation, useRegisterMutation, useLogoutMutation, useUseInfoQuery, useLazyUseInfoQuery} = accountApi;

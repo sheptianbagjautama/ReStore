@@ -1,12 +1,12 @@
 import { History, Logout, Person } from "@mui/icons-material";
 import {
-    Button,
-    Divider,
-    Fade,
-    ListItemIcon,
-    ListItemText,
-    Menu,
-    MenuItem,
+  Button,
+  Divider,
+  Fade,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import React, { useState } from "react";
 import { User } from "../models/user";
@@ -16,7 +16,7 @@ type Props = {
   user: User;
 };
 
-export default function UserMenu({ user }: Props) { 
+export default function UserMenu({ user }: Props) {
   const [logout] = useLogoutMutation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -29,7 +29,14 @@ export default function UserMenu({ user }: Props) {
 
   return (
     <div>
-      <Button onClick={handleClick}>{user.email}</Button>
+      <Button
+        onClick={handleClick}
+        color="inherit"
+        size="large"
+        sx={{ fontSize: "1.1rem" }}
+      >
+        {user.email}
+      </Button>
       <Menu
         id="fade-menu"
         MenuListProps={{
@@ -49,14 +56,14 @@ export default function UserMenu({ user }: Props) {
 
         <MenuItem>
           <ListItemIcon>
-            <History/>
+            <History />
           </ListItemIcon>
           <ListItemText>My Orders</ListItemText>
         </MenuItem>
-        <Divider/>
+        <Divider />
         <MenuItem onClick={logout}>
           <ListItemIcon>
-            <Logout/>
+            <Logout />
           </ListItemIcon>
           <ListItemText>Logout</ListItemText>
         </MenuItem>
