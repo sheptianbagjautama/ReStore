@@ -3,6 +3,7 @@ import { baseQueryWithErrorHandling } from "../../api/baseApi";
 import { User } from "../../models/user";
 import { LoginSchema } from "../../../lib/schemas/loginSchema";
 import { router } from "../../routes/Routes";
+import { toast } from "react-toastify";
 
 export const accountApi = createApi({
   reducerPath: "accountApi",
@@ -34,6 +35,15 @@ export const accountApi = createApi({
           body: creds,
         };
       },
+      async onQueryStarted(_, {queryFulfilled}) {
+        try {
+          await queryFulfilled;
+          toast.success('Registration successfully - you can now sign in!');
+          router.navigate('/login');
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }),
     useInfo: builder.query<User, void>({
       query: () => "account/user-info",

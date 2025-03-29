@@ -73,7 +73,7 @@ export default function LoginForm() {
             <Typography
               sx={{ marginLeft: 1 }}
               component={Link}
-              to="register"
+              to="/register"
               color="primary"
             >
               Sign Up
