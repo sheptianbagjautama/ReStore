@@ -36,10 +36,12 @@ namespace API.Controllers
             basket.PaymentIntentId ??= intent.Id;
             basket.ClientSecret ??= intent.ClientSecret;
 
-            var result = await storeContext.SaveChangesAsync() > 0;
+            if(storeContext.ChangeTracker.HasChanges()){
+                 var result = await storeContext.SaveChangesAsync() > 0;
             
-            if(!result) return BadRequest("Problem updating basket with intent");
-
+                if(!result) return BadRequest("Problem updating basket with intent");
+            }
+            
             return basket.ToDto();
         }
 
