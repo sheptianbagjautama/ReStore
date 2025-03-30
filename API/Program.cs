@@ -14,7 +14,7 @@ builder.Services.AddDbContext<StoreContext>(opt => {
 });
 builder.Services.AddCors();
 builder.Services.AddTransient<ExceptionMiddleware>();
-builder.Services.AddScoped<PaymentsServices>();
+builder.Services.AddScoped<PaymentsService>();
 
 //Menambahkan service package identity untuk keperluan autentikasi dan otorisasi (login, register, logout, role dll)
 builder.Services.AddIdentityApiEndpoints<User>(opt => {

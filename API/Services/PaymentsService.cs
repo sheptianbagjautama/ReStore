@@ -4,7 +4,7 @@ using Stripe;
 
 namespace API.Services;
 
-public class PaymentsServices(IConfiguration config)
+public class PaymentsService(IConfiguration config)
 {
     public async Task<PaymentIntent> CreateOrUpdatePaymentIntent(Basket basket){
         StripeConfiguration.ApiKey = config["StripeSettings:SecretKey"];
