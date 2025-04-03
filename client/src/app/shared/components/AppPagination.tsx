@@ -13,8 +13,8 @@ export default function AppPagination({metadata, onPageChange}:Props) {
     const startItem = (currentPage - 1) * pageSize + 1;
     const endItem = Math.min(currentPage * pageSize, totalCount);
 
-    console.log('startItem => ', `(${currentPage} - 1) * ${pageSize} + 1 = ${startItem}`)
-    console.log('endItem => ', `Math.min(${currentPage} * ${pageSize}, ${totalCount}) = ${endItem}`)
+    // console.log('startItem => ', `(${currentPage} - 1) * ${pageSize} + 1 = ${startItem}`)
+    // console.log('endItem => ', `Math.min(${currentPage} * ${pageSize}, ${totalCount}) = ${endItem}`)
 
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center" marginTop={3}>
