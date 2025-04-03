@@ -7,6 +7,7 @@ import { counterSlice } from "../features/contact/counterReducer";
 import { uiSlice } from "../layout/uiSlice";
 import { catalogSlice } from "../features/catalog/catalogSlice";
 import { accountApi } from "../features/account/accountApi";
+import { checkoutApi } from "../features/checkout/checkoutApi";
 
 // //Redux Core yang dulu
 // export function configureTheStore(){
@@ -20,6 +21,7 @@ export const store = configureStore({
         [errorApi.reducerPath]:errorApi.reducer,
         [basketApi.reducerPath]:basketApi.reducer,
         [accountApi.reducerPath]:accountApi.reducer,
+        [checkoutApi.reducerPath]:checkoutApi.reducer,
         counter:counterSlice.reducer,
         ui:uiSlice.reducer,
         catalog:catalogSlice.reducer
@@ -31,6 +33,7 @@ export const store = configureStore({
             errorApi.middleware,
             basketApi.middleware,
             accountApi.middleware,
+            checkoutApi.middleware,
         )
 })
 
