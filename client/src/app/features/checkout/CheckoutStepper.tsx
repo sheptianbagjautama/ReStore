@@ -19,12 +19,13 @@ import { currencyFormat } from "../../../lib/util";
 import { Address } from "../../models/user";
 import { useFetchAddressQuery, useUpdateUserAddressMutation } from "../account/accountApi";
 import Review from "./Review";
+import { LoadingButton } from "@mui/lab";
 
 const steps = ["Address", "Payment", "Review"];
 
 export default function CheckoutStepper() {
   const [activeStep, setActiveStep] = useState(0);
-  const {basket} = useBakset();
+  const {basket, clearBasket} = useBakset();
   const { data: { name, ...restAddress } = {} as Address, isLoading } = useFetchAddressQuery();
   const [updateAddress] = useUpdateUserAddressMutation();
   const [saveAddressChecked, setSaveAddressChecked] = useState(false);
@@ -76,6 +77,8 @@ export default function CheckoutStepper() {
 
     if(paymentResult?.paymentIntent?.status === "succeeded") {
       navigate("/checkout/success");
+      clearBasket();
+
     } else if(paymentResult?.error) {
       throw new Error(paymentResult.error.message);
     } else {
@@ -167,11 +170,13 @@ export default function CheckoutStepper() {
 
       <Box display="flex" paddingTop={2} justifyContent="space-between">
         <Button onClick={handleBack}>Back</Button>
-        <Button onClick={handleNext} disabled={
+        <LoadingButton onClick={handleNext} disabled={
           (activeStep === 0 && !addressComplete) ||
           (activeStep === 1 && !paymentComplete) || 
           submitting
-        }>{activeStep === steps.length - 1 ? `Pay ${currencyFormat(total)}` : 'Next'} </Button>
+        }
+        loading={submitting}
+        >{activeStep === steps.length - 1 ? `Pay ${currencyFormat(total)}` : 'Next'} </LoadingButton>
       </Box>
     </Paper>
   );
