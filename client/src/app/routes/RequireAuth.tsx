@@ -4,8 +4,6 @@ import { useUseInfoQuery } from "../features/account/accountApi";
 export default function RequireAuth() {
     const {data:user, isLoading} = useUseInfoQuery();
     const location = useLocation();
-
-    console.log("user => ", user);
     
     if(isLoading) return <div>Loading...</div>
 
