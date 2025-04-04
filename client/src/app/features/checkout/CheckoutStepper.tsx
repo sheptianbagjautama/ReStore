@@ -9,14 +9,15 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import { AddressElement, PaymentElement, useElements } from "@stripe/react-stripe-js";
+import { AddressElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import Review from "./Review";
 import { useFetchAddressQuery, useUpdateUserAddressMutation } from "../account/accountApi";
 import { Address } from "../../models/user";
-import { StripeAddressElementChangeEvent, StripePaymentElementChangeEvent } from "@stripe/stripe-js";
+import { ConfirmationToken, StripeAddressElementChangeEvent, StripePaymentElementChangeEvent } from "@stripe/stripe-js";
 import { useBakset } from "../../../lib/hooks/useBasket";
 import { currencyFormat } from "../../../lib/util";
+import { toast } from "react-toastify";
 
 const steps = ["Address", "Payment", "Review"];
 
@@ -26,15 +27,28 @@ export default function CheckoutStepper() {
   const [updateAddress] = useUpdateUserAddressMutation();
   const [saveAddressChecked, setSaveAddressChecked] = useState(false);
   const elements = useElements();
+  const stripe = useStripe();
   const [addressComplete, setAddressComplete] = useState(false);
   const [paymentComplete, setPaymentComplete] = useState(false);
   const {total} = useBakset();
+  const [confirmationToken, setConfirmationToken] = useState<ConfirmationToken | null>(null)
 
   const handleNext = async () => {
     if(activeStep === 0 && saveAddressChecked && elements) {
       const address = await getStripeAddress();
       if(address) await updateAddress(address);
     } 
+
+    //Jika ada di step 1 dan elemen serta stripe ada, maka kita akan mengirimkan elemen ke stripe untuk mendapatkan token konfirmasi.
+    if(activeStep === 1) {
+      if(!elements || !stripe) return;
+      const result = await elements.submit();
+      if(result.error) return toast.error(result.error.message);
+
+      const stripeResult = await stripe.createConfirmationToken({elements});
+      if(stripeResult.error) return toast.error(stripeResult.error.message);
+      setConfirmationToken(stripeResult.confirmationToken);
+    }
     setActiveStep((step) => step + 1);
   };
 
@@ -108,7 +122,7 @@ export default function CheckoutStepper() {
           <PaymentElement onChange={handlePaymentChange} />
         </Box>
         <Box sx={{ display: activeStep === 2 ? "block" : "none" }}>
-          <Review />
+          <Review confirmationToken={confirmationToken} />
         </Box>
       </Box>
 
