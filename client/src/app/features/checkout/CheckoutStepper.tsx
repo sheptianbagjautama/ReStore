@@ -58,7 +58,7 @@ export default function CheckoutStepper() {
     if(activeStep === 2) {
       await confirmPayment();
     }
-    setActiveStep((step) => step + 1);
+    if(activeStep < 2) setActiveStep((step) => step + 1);
   };
 
  const confirmPayment = async () => {
