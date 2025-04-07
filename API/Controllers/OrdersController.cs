@@ -40,7 +40,8 @@ public class OrdersController(StoreContext context) : BaseApiController
     {
         var basket = await context.Baskets.GetBasketWithItems(Request.Cookies["basketId"]);
 
-        if(basket == null || basket.Items.Count == 0) 
+        // if(basket == null || basket.Items.Count == 0 || !string.IsNullOrEmpty(basket.PaymentIntentId)) 
+        if(basket == null || basket.Items.Count == 0 || basket.PaymentIntentId == null) 
             return BadRequest("Basket is empty or not found.");
 
         var items = CreateOrderItems(basket.Items);
