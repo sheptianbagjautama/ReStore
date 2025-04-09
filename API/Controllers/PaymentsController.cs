@@ -1,10 +1,12 @@
 using API.Data;
 using API.Dtos;
+using API.Entities.OrderAggregate;
 using API.Extensions;
 using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 namespace API.Controllers
@@ -81,12 +83,43 @@ namespace API.Controllers
 
         private async Task HandlePaymentIntentFailed(PaymentIntent intent)
         {
-            throw new NotImplementedException();
+            var order = await storeContext.Orders
+                .Include(x => x.OrderItems)
+                .FirstOrDefaultAsync(x => x.PaymentIntentId == intent.Id)
+                ?? throw new Exception("Order not found");
+
+            foreach (var item in order.OrderItems)
+            {
+                var productItem = await storeContext.Products
+                    .FindAsync(item.ItemOrdered.ProductId)
+                    ?? throw new Exception("Problem updating order stock");
+
+                productItem.QuantityInStock += item.Quantity;
+            }
+
+            order.OrderStatus = OrderStatus.PaymentFailed;
+
+            await storeContext.SaveChangesAsync();
         }
 
         private async Task HandlePaymentIntentSucceeded(PaymentIntent intent)
         {
-            throw new NotImplementedException();
+            var order = await storeContext.Orders
+                .Include(x => x.OrderItems)
+                .FirstOrDefaultAsync(x => x.PaymentIntentId == intent.Id)
+                ?? throw new Exception("Order not found");
+
+                if(order.GetTotal() != intent.Amount) {
+                    order.OrderStatus = OrderStatus.PaymentMismatch;
+                } else {
+                    order.OrderStatus = OrderStatus.PaymentReceived;
+                }
+
+                var basket = await storeContext.Baskets.FirstOrDefaultAsync(x => x.PaymentIntentId == intent.Id);
+
+                if(basket != null) storeContext.Baskets.Remove(basket);
+
+                await storeContext.SaveChangesAsync();
         }
 
         private Event ConstructStripeEvent(string json)
