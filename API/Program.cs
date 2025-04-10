@@ -25,6 +25,10 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors(opt => {
     opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:3000");
 });
@@ -37,6 +41,7 @@ app.MapControllers();
 
 //Untuk endpoint login, register, logout dll cth: api/login
 app.MapGroup("api").MapIdentityApi<User>();
+app.MapFallbackToController("Index", "Fallback");
 
 DbInitializer.InitDb(app);
 
