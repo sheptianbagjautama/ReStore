@@ -5,9 +5,9 @@ import mkcert from 'vite-plugin-mkcert'
 // https://vite.dev/config/
 export default defineConfig({
   build:{
-    outDir:'../API/wwwroot',
-    chunkSizeWarningLimit:1025, 
-    emptyOutDir:true
+    outDir:'../API/wwwroot',              // Tempat hasil build (ke folder ASP.NET)
+    chunkSizeWarningLimit:1025,           // Naikkan batas peringatan ukuran file
+    emptyOutDir:true                      // Bersihkan folder output sebelum build
   },
   server:{
     port:3000

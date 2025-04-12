@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
@@ -16,11 +17,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useBakset } from "../../../lib/hooks/useBasket";
 import { currencyFormat } from "../../../lib/util";
-import { Address } from "../../models/user";
 import { useFetchAddressQuery, useUpdateUserAddressMutation } from "../account/accountApi";
-import Review from "./Review";
-import { LoadingButton } from "@mui/lab";
 import { useCreateOrderMutation } from "../orders/orderApi";
+import Review from "./Review";
 
 const steps = ["Address", "Payment", "Review"];
 
@@ -28,7 +27,7 @@ export default function CheckoutStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [createOrder] = useCreateOrderMutation();
   const {basket, clearBasket} = useBakset();
-  const { data: { name, ...restAddress } = {} as Address, isLoading } = useFetchAddressQuery();
+  const { data, isLoading} = useFetchAddressQuery();
   const [updateAddress] = useUpdateUserAddressMutation();
   const [saveAddressChecked, setSaveAddressChecked] = useState(false);
   const elements = useElements();
@@ -39,6 +38,11 @@ export default function CheckoutStepper() {
   const {total} = useBakset();
   const navigate = useNavigate();
   const [confirmationToken, setConfirmationToken] = useState<ConfirmationToken | null>(null)
+
+  let name, restAddress;
+  if(data) {
+    ({name, ...restAddress} = data);
+  }
 
   const handleNext = async () => {
     if(activeStep === 0 && saveAddressChecked && elements) {
